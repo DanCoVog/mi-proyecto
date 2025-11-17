@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investigación: Café y Memoria | UNIMINUTO</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%236B4423'/%3E%3Ctext x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-family='Arial, sans-serif'%3E☕%3C/text%3E%3C/svg%3E">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="Estudio sobre el efecto del café en la memoria a corto plazo - UNIMINUTO Villavicencio">
+    <meta name="author" content="Sara Rey Moreno, Daniel Felipe Romero Soler">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loader">
+            <div class="coffee-cup">☕</div>
+            <p>Cargando investigación...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">☕</div>
+                    <div class="header-text">
+                        <h1>Café y Memoria</h1>
+                        <p class="subtitle">Investigación Científica</p>
+                    </div>
+                </div>
+                <div class="university-badge">
+                    <span class="badge-text">UNIMINUTO</span>
+                    <span class="badge-location">Villavicencio</span>
+                </div>
+            </div>
+            <div class="header-description">
+                <p>Análisis del efecto del consumo de café en la memoria a corto plazo de estudiantes universitarios</p>
+            </div>
+        </header>
+
+        <main>
+            <!-- Sección de registro -->
+            <section class="card fade-in">
+                <div class="card-header">
+                    <h2>📝 Registrar Participante</h2>
+                    <p class="card-subtitle">Complete los datos del nuevo participante</p>
+                </div>
+                <form id="formParticipante" class="modern-form">
+                    <div class="form-group">
+                        <label for="nombre">Nombre completo:</label>
+                        <input type="text" id="nombre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edad">Edad:</label>
+                        <input type="number" id="edad" min="18" max="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="grupo">Grupo:</label>
+                        <select id="grupo" required>
+                            <option value="">Seleccione...</option>
+                            <option value="cafe">Con consumo de café</option>
+                            <option value="sin_cafe">Sin consumo de café</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="puntaje">Puntaje de memoria (0-10):</label>
+                        <input type="number" id="puntaje" min="0" max="10" step="0.1" required>
+                        <small>Cantidad de palabras recordadas de 10 mostradas</small>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Guardar Participante</button>
+                </form>
+            </section>
+
+            <!-- Sección de participantes registrados -->
+            <section class="card fade-in">
+                <div class="card-header">
+                    <h2>👥 Participantes Registrados</h2>
+                    <p class="card-subtitle">Lista completa de participantes del estudio</p>
+                </div>
+                <div class="table-container">
+                    <table id="tablaParticipantes">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Edad</th>
+                                <th>Grupo</th>
+                                <th>Puntaje</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyParticipantes">
+                            <tr>
+                                <td colspan="6" class="text-center">No hay participantes registrados</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Sección de estadísticas -->
+            <section class="card fade-in">
+                <div class="card-header">
+                    <h2>📊 Análisis Estadístico</h2>
+                    <p class="card-subtitle">Medidas de tendencia central y dispersión</p>
+                </div>
+                <button onclick="cargarEstadisticas()" class="btn-secondary">
+                    <span>🔄</span> Actualizar Estadísticas
+                </button>
+                
+                <div class="stats-grid">
+                    <div class="stat-card cafe">
+                        <h3>Grupo CON Café</h3>
+                        <div id="estadisticasCafe">
+                            <p>No hay datos disponibles</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card sin-cafe">
+                        <h3>Grupo SIN Café</h3>
+                        <div id="estadisticasSinCafe">
+                            <p>No hay datos disponibles</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección de gráficos -->
+            <section class="card fade-in">
+                <div class="card-header">
+                    <h2>📈 Visualización de Resultados</h2>
+                    <p class="card-subtitle">Representación gráfica del análisis comparativo</p>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="chartComparacion"></canvas>
+                </div>
+
+                <div class="charts-row">
+                    <div class="chart-half">
+                        <canvas id="chartDistribucion"></canvas>
+                    </div>
+                    <div class="chart-half">
+                        <canvas id="chartPastel"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="authors">
+                    <p><strong>Autores:</strong></p>
+                    <p>Sara Rey Moreno • Daniel Felipe Romero Soler</p>
+                </div>
+                <div class="institution">
+                    <p>Corporación Universitaria Minuto de Dios</p>
+                    <p>Tecnología en Desarrollo de Software</p>
+                    <p>Noviembre 2025</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Ocultar pantalla de carga
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                }, 500);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
