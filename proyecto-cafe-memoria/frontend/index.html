@@ -90,26 +90,105 @@
             <section class="card fade-in">
                 <div class="card-header">
                     <h2>👥 Participantes Registrados</h2>
-                    <p class="card-subtitle">Lista completa de participantes del estudio</p>
+                    <p class="card-subtitle">Visualización organizada por grupos de estudio</p>
                 </div>
-                <div class="table-container">
-                    <table id="tablaParticipantes">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Edad</th>
-                                <th>Grupo</th>
-                                <th>Puntaje</th>
-                                <th>Fecha</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbodyParticipantes">
-                            <tr>
-                                <td colspan="6" class="text-center">No hay participantes registrados</td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+                <!-- Tabs para cambiar entre vistas -->
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="cambiarTab('todos')">
+                        <span>📊</span>
+                        <span class="tab-text">Todos los Participantes</span>
+                    </button>
+                    <button class="tab-btn" onclick="cambiarTab('cafe')">
+                        <span>☕</span>
+                        <span class="tab-text">Con Café</span>
+                    </button>
+                    <button class="tab-btn" onclick="cambiarTab('sinCafe')">
+                        <span>🚫</span>
+                        <span class="tab-text">Sin Café</span>
+                    </button>
+                </div>
+
+                <!-- Tabla de TODOS -->
+                <div id="tablaTodos" class="table-section active">
+                    <div class="table-info">
+                        <h3>📋 Lista Completa de Participantes</h3>
+                        <span class="count-badge" id="countTodos">Total: 0</span>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Edad</th>
+                                    <th>Grupo</th>
+                                    <th>Puntaje</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyTodos">
+                                <tr>
+                                    <td colspan="7" class="text-center">No hay participantes registrados</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tabla CON CAFÉ -->
+                <div id="tablaCafe" class="table-section">
+                    <div class="table-info">
+                        <h3>☕ Participantes que Consumieron Café</h3>
+                        <span class="count-badge cafe-badge" id="countCafe">Total: 0</span>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Edad</th>
+                                    <th>Puntaje</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyCafe">
+                                <tr>
+                                    <td colspan="6" class="text-center">No hay participantes en este grupo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tabla SIN CAFÉ -->
+                <div id="tablaSinCafe" class="table-section">
+                    <div class="table-info">
+                        <h3>🚫 Participantes sin Consumo de Café</h3>
+                        <span class="count-badge sincafe-badge" id="countSinCafe">Total: 0</span>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Edad</th>
+                                    <th>Puntaje</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodySinCafe">
+                                <tr>
+                                    <td colspan="6" class="text-center">No hay participantes en este grupo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
 
@@ -182,11 +261,25 @@
         // Ocultar pantalla de carga
         window.addEventListener('load', () => {
             setTimeout(() => {
-                document.getElementById('loadingScreen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('loadingScreen').style.display = 'none';
-                }, 500);
+                const loadingScreen = document.getElementById('loadingScreen');
+                if (loadingScreen) {
+                    loadingScreen.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }
             }, 1000);
+        });
+
+        // Debug: Verificar que todos los elementos existen
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ Verificando elementos...');
+            console.log('tbodyTodos:', document.getElementById('tbodyTodos'));
+            console.log('tbodyCafe:', document.getElementById('tbodyCafe'));
+            console.log('tbodySinCafe:', document.getElementById('tbodySinCafe'));
+            console.log('countTodos:', document.getElementById('countTodos'));
+            console.log('countCafe:', document.getElementById('countCafe'));
+            console.log('countSinCafe:', document.getElementById('countSinCafe'));
         });
     </script>
 </body>
