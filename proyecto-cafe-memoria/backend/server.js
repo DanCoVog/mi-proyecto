@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const Participante = require('./models/Participante'); // ⬅️ Importar el modelo
+const Participante = require('./models/Participante');
 
 const app = express();
 
@@ -9,12 +9,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Conexión a MongoDB
-mongoose.connect('mongodb://localhost:27017/cafe-memoria', {
+// Conexión a MongoDB Atlas o local
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://cafeMemoria:kirito123@trabajo-cafe.fihzlsx.mongodb.net/cafe-memoria?retryWrites=true&w=majority';
+
+mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log('✅ Conectado a MongoDB'))
+.then(() => console.log('✅ Conectado a MongoDB Atlas'))
 .catch(err => console.error('❌ Error conectando a MongoDB:', err));
 
 // ===== RUTAS =====
@@ -52,7 +54,7 @@ app.get('/api/participantes', async (req, res) => {
   }
 });
 
-// 3. Obtener estadísticas completas (usando el método estático del modelo)
+// 3. Obtener estadísticas completas
 app.get('/api/estadisticas', async (req, res) => {
   try {
     const estadisticasCafe = await Participante.obtenerEstadisticasPorGrupo('cafe');
@@ -117,6 +119,7 @@ app.get('/', (req, res) => {
   res.json({ 
     mensaje: 'API de Investigación Café y Memoria',
     version: '1.0.0',
+    status: 'online',
     endpoints: {
       participantes: '/api/participantes',
       estadisticas: '/api/estadisticas'
@@ -124,8 +127,14 @@ app.get('/', (req, res) => {
   });
 });
 
+// Health check para servicios de hosting
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date() });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
   console.log(`📊 API disponible en http://localhost:${PORT}/api`);
+  console.log(`☁️  Conectado a MongoDB Atlas`);
 });
